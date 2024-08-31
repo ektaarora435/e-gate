@@ -22,6 +22,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import Link from 'next/link';
 
 export default function Header({session, status, router}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -51,7 +52,7 @@ export default function Header({session, status, router}) {
               <button className="-mx-3 block rounded-lg text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" onClick={() => router.push("/api/auth/signout")}>Sign Out</button>
             </>
           ) : (
-            <a className="-mx-3 block rounded-lg text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" href="/auth/login">Log In</a>
+            <Link className="-mx-3 block rounded-lg text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" href="/auth/login">Log In</Link>
           )}
         </div>
       </nav>
@@ -85,7 +86,7 @@ export default function Header({session, status, router}) {
                 {status === "authenticated" ? (
                   <button className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" onClick={() => router.push("/api/auth/signout")}>Sign Out</button>
                 ) : (
-                  <a className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" href="/auth/login">Log In</a>
+                  <Link className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" href="/auth/login">Log In</Link>
                 )}
               </div>
             </div>
