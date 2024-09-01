@@ -189,20 +189,20 @@ const StaffView = ({ session }) => {
             {passLogs.map((log) => (
               <tr key={log._id}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-blue-600"><a href={`tel:+91${log.pass.user.phone}`}>{log.pass.user.name}</a>
+                  <div className="text-sm text-blue-600"><a href={`tel:+91${log?.pass?.user?.phone}`}>{log?.pass?.user?.name}</a>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{formatUTCDateTo24Hr(log.time)}</div>
+                  <div className="text-sm text-gray-900">{formatUTCDateTo24Hr(log?.time)}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{log.pass.purpose}</div>
+                  <div className="text-sm text-gray-900">{log?.pass?.purpose}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{log.status}</div>
+                  <div className="text-sm text-gray-900">{log?.status}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{log.by.name}</div>
+                  <div className="text-sm text-gray-900">{log?.by.name}</div>
                 </td>
               </tr>
             ))}
