@@ -38,7 +38,13 @@ const PassDetails = async (req, res) => {
           else if (pass.status === 'entered') {
             pass.exitTime = new Date();
             pass.status = 'exited';
+
+            if (pass.user.role === 'visitor') {
+              pass.status = 'expired';
+            }
+
             await pass.save();
+            
 
             const passLog = await PassLog.create({by:session.user.id, pass: pass.id, time: new Date(), status: 'exited'});
             await passLog.save();
