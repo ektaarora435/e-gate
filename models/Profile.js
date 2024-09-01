@@ -1,5 +1,3 @@
-// create a mongoose Profile model for a hostel e-gate pass system for residents, visitors and staff user types
-
 import mongoose from "mongoose";
 
 const ProfileSchema = new mongoose.Schema({
