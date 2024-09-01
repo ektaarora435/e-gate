@@ -46,9 +46,9 @@ const VisitorGatePass = ({ session }) => {
   }
 
   const checkExpired = () => {
-    let now = new Date(gatePass[0].date);
+    let now = new Date();
     let expires = new Date(gatePass[0].date) ;
-    expires.setSeconds(expires.setSeconds() + 6);
+    expires.setSeconds(expires.setSeconds() + 5);
     return now > expires;
   }
 

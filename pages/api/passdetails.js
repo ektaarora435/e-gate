@@ -3,12 +3,19 @@ import authOptions from "@/lib/auth"
 import GatePass from "@/models/GatePass";
 import Profile from "@/models/Profile";
 
+const checkExpired = (date) => {
+  let now = new Date();
+  let expires = new Date(date) ;
+  expires.setHours(expires.getHours() + 5);
+  return now > expires;
+}
+
 const PassDetails = async (req, res) => {
   const session = await getServerSession(req, res, authOptions)
   if (session) {
     if (req.method === "POST") {
       if (session?.user.role === "staff") {
-        const pass = await GatePass.create({user: session.user.id, status: "pending", purpose: 'resident'});
+        const pass = await GatePass.create({user: session.user.id, status: "pending", purpose: session?.user.role});
         await pass.save();
         
         if (pass) {
@@ -28,10 +35,17 @@ const PassDetails = async (req, res) => {
 
     else if (req.method === "GET") {
       if (session?.user.role === "staff") {
-        
         const pass = await GatePass.findById(req.query.id).populate('user').exec();
 
+
         if (pass) {
+          pass.expired = checkExpired(pass.date);
+
+          if (pass.expired) {
+            pass.status = 'expired';
+            await pass.save();
+          }
+
           res.status(200).send(pass);
         }
         else {

@@ -4,6 +4,13 @@ import GatePass from "@/models/GatePass";
 import Profile from "@/models/Profile";
 import PassLog from "@/models/PassLog";
 
+const checkExpired = (date) => {
+  let now = new Date();
+  let expires = new Date(date) ;
+  expires.setHours(expires.getHours() + 5);
+  return now > expires;
+}
+
 const PassDetails = async (req, res) => {
   const session = await getServerSession(req, res, authOptions)
   if (session) {
@@ -13,6 +20,14 @@ const PassDetails = async (req, res) => {
 
         if (pass) {
           if (pass.status === 'exited' || pass.status === 'pending' || pass.status === 'approved') {
+            const expired = checkExpired(pass.date);
+            if (expired) {
+              res.status(400).send({
+                error: "The gate pass has expired.",
+              })
+              return;
+            }
+
             pass.entryTime = new Date();
             pass.status = 'entered';
             await pass.save();
@@ -27,13 +42,18 @@ const PassDetails = async (req, res) => {
 
             const passLog = await PassLog.create({by:session.user.id, pass: pass.id, time: new Date(), status: 'exited'});
             await passLog.save();
+          } else if (pass.status === 'expired') {
+            res.status(400).send({
+              error: "The gate pass has been expired.",
+            })
+            return;
           }
 
           res.status(200).send(pass);
         }
         else {
           res.status(400).send({
-            error: "An error occurred while creating the gate pass.",
+            error: "An error occurred while approving the gate pass.",
           })
         }
       } else {
