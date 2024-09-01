@@ -118,6 +118,12 @@ const StaffView = ({ session }) => {
                               }
                             });
                             const json = await res.json();
+                            
+                            if (json.error) {
+                              alert(json.error);
+                              return;
+                            }
+
                             setExpired(json.expired);
                             setPassData(json);
                           }
