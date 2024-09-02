@@ -20,12 +20,15 @@ const PassDetails = async (req, res) => {
 
         if (pass) {
           if (pass.status === 'exited' || pass.status === 'pending' || pass.status === 'approved') {
-            const expired = checkExpired(pass.date);
-            if (expired) {
-              res.status(400).send({
-                error: "The gate pass has expired.",
-              })
-              return;
+            if (pass.user.role === 'visitor') {
+              const expired = checkExpired(pass.date);
+              
+              if (expired) {
+                res.status(400).send({
+                  error: "The gate pass has expired.",
+                })
+                return;
+              }
             }
 
             pass.entryTime = new Date();
