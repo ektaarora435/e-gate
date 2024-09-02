@@ -39,11 +39,13 @@ const PassDetails = async (req, res) => {
 
 
         if (pass) {
-          pass.expired = checkExpired(pass.date);
+          if (pass.user.role === "visitor") {
+            pass.expired = checkExpired(pass.date);
 
-          if (pass.expired) {
-            pass.status = 'expired';
-            await pass.save();
+            if (pass.expired) {
+              pass.status = 'expired';
+              await pass.save();
+            }
           }
 
           res.status(200).send(pass);
